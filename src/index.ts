@@ -1,16 +1,16 @@
 import * as parse5 from 'parse5';
 
-// Node type alias to work with Parse5's funky/complicated types. 
+// Type alias to work with Parse5's funky types. 
 type Node = (parse5.AST.Default.Element & parse5.AST.Default.Node) | undefined
 
-// Options you pass in.
+// Options for you.
 interface Options {
     lang?: string
-    pad?: string
+    padStr?: string
 }
 
-// Pad the space above the node (to preserve node's line position in a file).
-function padContent (node: Node, pad: string): string {
+// Pad the space above node with given string (preserves content line position of a file).
+function padContent (node: Node, padStr: string): string {
     if (!node) return ''
 
     const nodeContent = parse5.serialize(node);
@@ -19,27 +19,26 @@ function padContent (node: Node, pad: string): string {
     let nodePadding = '';
 
     for (let i = 1; i <= nodeLocation; i++) {
-        nodePadding += pad + (i === nodeLocation ? '' : '\r\n');
+        nodePadding += padStr + (i === nodeLocation ? '' : '\r\n');
     }
 
     return nodePadding + nodeContent;
 }
 
 // Get an array of all the nodes (tags).
-export function getNodes (input: string): parse5.AST.Node[] {
+export function getNodes (input: string): parse5.AST.Default.Element[] {
 	const rootNode = parse5.parseFragment(input, { locationInfo: true }) as parse5.AST.Default.DocumentFragment
     
-    return rootNode.childNodes
+    return rootNode.childNodes as parse5.AST.Default.Element[]
 }
 
-// Parse a vue file's contents.
-export function parse (input: string, tag: string, options?: Options): string {
+// Get the node.
+export function getNode (input: string, tag: string, options?: Options): Node {
     // Set defaults.
     const lang = options ? options.lang : undefined
-    const pad = options ? options.pad || '//' : '//'
 
-	// Parse the .vue file nodes (tags) and find a match.
-	const node = getNodes(input).find((node: parse5.AST.Default.Element) => {
+    // Parse the .vue file nodes (tags) and find a match.
+	return getNodes(input).find((node: parse5.AST.Default.Element) => {
         const tagFound = tag === node.nodeName
         const tagHasAttrs = ('attrs' in node)
         let langFound = false
@@ -52,6 +51,12 @@ export function parse (input: string, tag: string, options?: Options): string {
 
 		return tagFound && langFound
     }) as Node;
+}
+
+// Parse a vue file's contents.
+export function parse (input: string, tag: string, options?: Options): string {
+    const padStr = options ? options.padStr || '//' : '//'  // <-- Default pads with slashes for comments.   
+    const node = getNode(input, tag, options)
     
-	return padContent(node, pad);
+	return padContent(node, padStr)
 }
