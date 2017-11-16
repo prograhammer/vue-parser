@@ -16,6 +16,7 @@
             "src/*"
           ]
         },
+        "declaration": true,
         "outDir": "lib"        
     }
 }

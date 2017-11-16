@@ -1,10 +1,10 @@
 import * as parse5 from 'parse5';
 
 // Type alias to work with Parse5's funky types. 
-type Node = (parse5.AST.Default.Element & parse5.AST.Default.Node) | undefined
+export type Node = (parse5.AST.Default.Element & parse5.AST.Default.Node) | undefined
 
 // Options for you.
-interface Options {
+export interface Options {
     lang?: string
     padStr?: string
 }
