@@ -18,6 +18,9 @@ export interface Options {
  * Parse a vue file's contents. 
  */ 
 export function parse (input: string, tag: string, options?: Options): string {
+    // Convert CRLF to LF.
+    input = input.replace(/\r\n/g, '\n')
+
     const padStr = options ? options.padStr || '//' : '//'  // <-- Default pads with slashes for comments.   
     const node = getNode(input, tag, options)
     
