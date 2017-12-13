@@ -18,31 +18,42 @@ export interface Options {
  * Parse a vue file's contents. 
  */ 
 export function parse (input: string, tag: string, options?: Options): string {
-    // Convert CRLF to LF.
-    input = input.replace(/\r\n/g, '\n')
-
-    const padStr = options ? options.padStr || '//' : '//'  // <-- Default pads with slashes for comments.   
     const node = getNode(input, tag, options)
-    
-	return padContent(node, padStr)
+	return padContent(node, input)
 }
 
 /**
  * Pad the space above node with given string (preserves content line position of a file).
  */ 
-function padContent (node: Node, padStr: string): string {
-    if (!node) return ''
+function padContent (node: Node, originalInput: string): string {
+    if (!node || !node.__location) return ''
+    
+    const nodeContent = originalInput.substring(node.__location.startTag.endOffset, node.__location.endTag.startOffset);
+    const preNodeContent = originalInput.substring(0, node.__location.startTag.endOffset);
+    const nodeLocation = (preNodeContent.match(new RegExp("\n", "g")) || []).length + 1;
 
-    const nodeContent = parse5.serialize(node);
-    const nodeLocation = node.__location === undefined ? 0 : node.__location.line;
-
+    const spacePad = Math.floor((node.__location.startTag.endOffset - nodeLocation) / nodeLocation);
+    const remainderSlashPad = ((node.__location.startTag.endOffset - nodeLocation) % nodeLocation) + 1
+    const slashPadding = createPaddingSlashes(spacePad);
+    
     let nodePadding = '';
-
+    
     for (let i = 1; i <= nodeLocation; i++) {
-        nodePadding += padStr + (i === nodeLocation ? '' : '\n');
+        nodePadding += slashPadding + (i === nodeLocation ? createPaddingSlashes(remainderSlashPad) : '\n');
     }
 
     return nodePadding + nodeContent;
+}
+
+/**
+ * Get an array of all the nodes (tags).
+ */
+function createPaddingSlashes(amount: number): string {
+    var slashPadding = ''
+    for(var x=0; x < amount; x++){
+        slashPadding += "/"
+    }
+    return slashPadding;
 }
 
 /**
