@@ -30,7 +30,7 @@ function padContent (node: Node, originalInput: string): string {
     
     const nodeContent = originalInput.substring(node.__location.startTag.endOffset, node.__location.endTag.startOffset);
     const preNodeContent = originalInput.substring(0, node.__location.startTag.endOffset);
-    const nodeLocation = (preNodeContent.match(new RegExp("\n", "g")) || []).length + 1;
+    const nodeLocation = (preNodeContent.match(new RegExp('\n', 'g')) || []).length + 1;
 
     const spacePad = Math.floor((node.__location.startTag.endOffset - nodeLocation) / nodeLocation);
     const remainderSlashPad = ((node.__location.startTag.endOffset - nodeLocation) % nodeLocation) + 1
@@ -49,9 +49,9 @@ function padContent (node: Node, originalInput: string): string {
  * Return a string of slashes the size of the given amount.
  */
 function createPaddingSlashes(amount: number): string {
-    var slashPadding = ''
-    for(var x = 0; x < amount; x++){
-        slashPadding += "/"
+    let slashPadding = ''
+    for (let x = 0; x < amount; x++) {
+        slashPadding += '/';
     }
     return slashPadding;
 }
