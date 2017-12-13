@@ -50,7 +50,7 @@ function padContent (node: Node, originalInput: string): string {
  */
 function createPaddingSlashes(amount: number): string {
     var slashPadding = ''
-    for(var x=0; x < amount; x++){
+    for(var x = 0; x < amount; x++){
         slashPadding += "/"
     }
     return slashPadding;
