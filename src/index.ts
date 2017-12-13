@@ -46,7 +46,7 @@ function padContent (node: Node, originalInput: string): string {
 }
 
 /**
- * Get an array of all the nodes (tags).
+ * Return a string of slashes the size of the given amount.
  */
 function createPaddingSlashes(amount: number): string {
     var slashPadding = ''
