@@ -1,6 +1,6 @@
 {
   "name": "vue-parser",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Get contents from tags in .vue files (using AST tree).",
   "author": "David Graham <prograhammer@gmail.com>",
   "license": "MIT",
