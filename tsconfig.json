@@ -18,5 +18,14 @@
         },
         "declaration": true,
         "outDir": "lib"        
-    }
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.vue"
+        //"test/**/*.ts",
+        //"test/**/*.vue"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

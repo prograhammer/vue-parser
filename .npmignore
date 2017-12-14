@@ -2,5 +2,5 @@
 .vscode
 tsconfig.json
 tslint.json
-/src/
-node_modules/
+src/
+test/

@@ -9,50 +9,46 @@ export type Node = (parse5.AST.Default.Element & parse5.AST.Default.Node) | unde
  * Options for you.
  */
 export interface Options {
-  lang?: string | [string]
-  padStr?: string
+  lang?: string | [string],
+  emptyExport?: boolean // default: true
 }
 
 /**
  * Parse a vue file's contents.
  */
 export function parse (input: string, tag: string, options?: Options): string {
+  const emptyExport = options && options.emptyExport !== undefined ? options.emptyExport : true
   const node = getNode(input, tag, options)
-  return padContent(node, input)
+  let parsed = padContent(node, input)
+
+  // Add a default export of empty object if target tag script not found.
+  // This fixes a TypeScript issue of "not a module".
+  if (!parsed && tag === 'script' && emptyExport) {
+    parsed = 'export default {}' + '\n'
+  }
+
+  return parsed
 }
 
 /**
- * Pad the space above node with given string (preserves content line position of a file).
+ * Pad the space above node with slashes (preserves content line/col positions in a file).
  */
-function padContent (node: Node, originalInput: string): string {
+function padContent (node: Node, input: string): string {
   if (!node || !node.__location) return ''
 
-  const nodeContent = originalInput.substring(node.__location.startTag.endOffset, node.__location.endTag.startOffset)
-  const preNodeContent = originalInput.substring(0, node.__location.startTag.endOffset)
-  const nodeLocation = (preNodeContent.match(new RegExp('\n', 'g')) || []).length + 1
+  const nodeContent = input.substring(node.__location.startTag.endOffset, node.__location.endTag.startOffset)
+  const preNodeContent = input.substring(0, node.__location.startTag.endOffset)
+  const nodeLines = (preNodeContent.match(new RegExp('\n', 'g')) || []).length + 1
 
-  const spacePad = Math.floor((node.__location.startTag.endOffset - nodeLocation) / nodeLocation)
-  const remainderSlashPad = ((node.__location.startTag.endOffset - nodeLocation) % nodeLocation) + 1
-  const slashPadding = createPaddingSlashes(spacePad)
-
+  let remainingSlashes = preNodeContent.replace(/[\s\S]/gi, '/')
   let nodePadding = ''
 
-  for (let i = 1; i <= nodeLocation; i++) {
-    nodePadding += slashPadding + (i === nodeLocation ? createPaddingSlashes(remainderSlashPad) : '\n')
+  for (let i = 1; i < nodeLines; i++) {
+    nodePadding += '//' + '\n'
+    remainingSlashes = remainingSlashes.substring(3)
   }
 
-  return nodePadding + nodeContent
-}
-
-/**
- * Return a string of slashes the size of the given amount.
- */
-function createPaddingSlashes (amount: number): string {
-  let slashPadding = ''
-  for (let x = 0; x < amount; x++) {
-    slashPadding += '/'
-  }
-  return slashPadding
+  return nodePadding + remainingSlashes + nodeContent
 }
 
 /**
@@ -71,7 +67,7 @@ export function getNode (input: string, tag: string, options?: Options): Node {
   // Set defaults.
   const lang = options ? options.lang : undefined
 
-  // Parse the .vue file nodes (tags) and find a match.
+  // Parse the Vue file nodes (tags) and find a match.
   return getNodes(input).find((node: parse5.AST.Default.Element) => {
     const tagFound = tag === node.nodeName
     const tagHasAttrs = ('attrs' in node)

@@ -34,7 +34,7 @@ export default {
 h1 {
   font-weight: normal;
 }
-<style>
+</style>
 `
 
 const myScriptContents = vueParser.parse(vueFileContents, 'script', { lang: ['js', 'jsx'] })
