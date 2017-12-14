@@ -1,7 +1,11 @@
 // Place your settings in this file to override the default and user settings
 {
-    // Settings for .js, .vue, .styl files.
+    // Settings by file type.
     "[javascript]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
+    "[typescript]": {
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },

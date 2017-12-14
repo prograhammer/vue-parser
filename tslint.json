@@ -5,7 +5,8 @@
     ],
     "jsRules": {},
     "rules": {
-        // "no-consecutive-blank-lines": false
+        "no-unused-variable": true,
+        "quotemark": [true, "single"]   
     },
     "rulesDirectory": []
 }
