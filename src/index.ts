@@ -38,17 +38,33 @@ function padContent (node: Node, input: string): string {
 
   const nodeContent = input.substring(node.__location.startTag.endOffset, node.__location.endTag.startOffset)
   const preNodeContent = input.substring(0, node.__location.startTag.endOffset)
-  const nodeLines = (preNodeContent.match(new RegExp('\n', 'g')) || []).length + 1
 
+  let nodeLines = (preNodeContent.match(new RegExp('\n', 'g')) || []).length + 1
   let remainingSlashes = preNodeContent.replace(/[\s\S]/gi, '/')
-  let nodePadding = ''
+  let nodePrePad = ''
+  let nodePad = ''
 
-  for (let i = 1; i < nodeLines; i++) {
-    nodePadding += '//' + '\n'
+  // Reserve space for tslint:disable (if possible).
+  if (nodeLines > 2) {
+    nodePrePad = '//' + '\n'
+    nodeLines--
     remainingSlashes = remainingSlashes.substring(3)
   }
 
-  return nodePadding + remainingSlashes + nodeContent
+  // Pad with slashes (comments).
+  for (let i = 1; i < nodeLines; i++) {
+    nodePad += '//' + '\n'
+    remainingSlashes = remainingSlashes.substring(3)
+  }
+
+  // Add tslint:disable and tslint:enable (if possible).
+  if (nodePrePad && remainingSlashes.length > 50) {
+    nodePrePad = '// tslint:disable' + '\n'
+    remainingSlashes = remainingSlashes.substring('// tslint:disable\n// tslint:enable'.length)
+    remainingSlashes = remainingSlashes.replace(/[\s\S]/gi, ' ') + '   // tslint:enable'
+  }
+
+  return nodePrePad + nodePad + remainingSlashes + nodeContent
 }
 
 /**
