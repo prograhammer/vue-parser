@@ -1,4 +1,6 @@
-# vue-parser
+# Vue Parser
+
+![Important](https://travis-ci.org/prograhammer/vue-parser.svg?branch=master "Travis CI badge")
 
 A simple way to parse a `.vue` file's contents (single file component) to get specific content from a
  tag like a template, script, or style tag. 

@@ -24,7 +24,7 @@ export function parse (input: string, tag: string, options?: Options): string {
   // Add a default export of empty object if target tag script not found.
   // This fixes a TypeScript issue of "not a module".
   if (!parsed && tag === 'script' && emptyExport) {
-    parsed = 'export default {}' + '\n'
+    parsed = 'import Vue from \'vue\'\nexport default Vue\n'
   }
 
   return parsed

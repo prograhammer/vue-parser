@@ -1,0 +1,10 @@
+language: node_js
+deploy:
+  provider: npm
+  email: prograhammer@gmail.com
+  skip_cleanup: true
+  'on':
+    tags: true
+    branch: master
+  api_key:
+    secure: CgB3e1pxeP7kLYHLt6ich7+LiFzVeOBtDuCveLD9rBycjLzPbNAlfqzDC2ce1MEJC2YOhsaytafeKoR9XynT50t09Ct/KtASeqAWTN+TjLbeAHilqHCj8iaYthOe7tMxxyVBEfvkxXTWcSyPH2qgCzHRC0k9F9RQM6wO7lLWP5Sz9TF524OQxCiljqrK1VrR4vKrsRMmiLolc2VWI0jQ+B+YFAjXYPsjooneztLViH95LGnv4BdaPOx3QZMBF6Hl4jK0/9zy6dNZUgAqRZVNXX530P7wX6adOGEkMieekKpn8ffsfPpaZKWFMrSf0toqF2UQyoqEkrcqBL82/Es2WNKYYKj+mhQkPTDWEYaBbO9jqNkwoBP8Gn+1mMjwmpI49n+0bDctdc6/tWDrRves1yRvqWWsJlf6ERibOlEx4qTgPyZSxUKsCC5J7z1iDa57MIY76C7kJi8RkulZU0NFLZsNL/s8t5yhq8dCTn0B1xLkqzQ5i9CEY0t3F2WNMJKT5xVGmPYqUANn1p4IR+SzSk9sVrsv6Qclbh3/kSQk+G8SO7hO/d9WLqqAMkguccJuFyTkA1anb5LKoGWleEq2/yKIdzZu7NQnm1Nywf9TOnkp6H687sUV3Z2OR2DWG8LA8QTHKtkXSAKtT36SnSz+cSq5yTwsrO2BvH1xRcB6b8M=
