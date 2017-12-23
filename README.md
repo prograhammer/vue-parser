@@ -3,7 +3,8 @@
 ![Important](https://travis-ci.org/prograhammer/vue-parser.svg?branch=master "Travis CI badge")
 
 A simple way to parse a `.vue` file's contents (single file component) to get specific content from a
- tag like a template, script, or style tag. 
+ tag like a template, script, or style tag. Character count and line/character positions are preserved. Also, `tslint:disable` and 
+ `tslint:enable` are added whenever possible (this will be more configurable in the future to allow for other linters). 
 The returned content can be padded repeatedly with a specific string so that line numbers are retained
  (ie. good for reporting linting errors). You can also get the full [parse5](https://github.com/inikulin/parse5/blob/master/lib/index.d.ts#L193) 
  node/element which includes the location info of where the tag content is located. 
