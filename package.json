@@ -40,7 +40,6 @@
     "npm": ">= 3.0.0"
   },
   "dependencies": {
-    "parse5": "^3.0.3",
-    "travis-encrypt": "github:pwmckenna/node-travis-encrypt"
+    "parse5": "^3.0.3"
   }
 }
