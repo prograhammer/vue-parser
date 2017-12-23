@@ -24,7 +24,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "compile": "tsc ",
-    "test": "mocha -R spec ./test",
+    "test": "npm run build && mocha -R spec ./test",
     "build": "npm run clean && npm run compile"
   },
   "devDependencies": {
