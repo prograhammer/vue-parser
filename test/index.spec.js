@@ -91,7 +91,7 @@ describe('Tests', function () {
     const contents = fs.readFileSync('./test/test-no-script.vue', 'utf8')
     const parsed = vueParser.parse(contents, 'script', { lang: 'ts' })
 
-    expect(parsed).to.be.equal('import Vue from \'vue\'\nexport default Vue\n')   
+    expect(parsed).to.be.equal('// tslint:disable\nimport Vue from \'vue\'\nexport default Vue\n')   
   })
 
 })
